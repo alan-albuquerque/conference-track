@@ -4,9 +4,9 @@ public class SessionEvent {
     private Integer minutesDuration;
     private String name;
 
-    public SessionEvent(Integer minutesDuration, String name) {
-        this.minutesDuration = minutesDuration;
+    public SessionEvent(String name, Integer minutesDuration) {
         this.name = name;
+        this.minutesDuration = minutesDuration;
     }
 
     public Integer getMinutesDuration() {
@@ -23,5 +23,13 @@ public class SessionEvent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionEvent{" +
+                "minutesDuration=" + minutesDuration +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
