@@ -28,15 +28,12 @@ public class Main {
                 }
                 conference.addDay(conferenceDay);
             }
-            System.out.println(conference.toString());
+
+            System.out.println(conference.toDisplay());
 
         } catch (IOException | InvalidTalkFileLineException e) {
             e.printStackTrace();
         }
 
-//        br.com.alan.conference.SessionEvent morning = new br.com.alan.conference.SessionEvent(60, "Python");
-//        br.com.alan.conference.Session morningSession = new br.com.alan.conference.Session(SessionType.MORNING);
-//        br.com.alan.conference.Session afternoonSession = new br.com.alan.conference.Session(SessionType.AFTERNOON);
-//        conference.
     }
 }

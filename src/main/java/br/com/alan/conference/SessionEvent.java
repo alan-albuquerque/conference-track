@@ -25,6 +25,10 @@ public class SessionEvent {
         this.name = name;
     }
 
+    public String toDisplay() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "SessionEvent{" +

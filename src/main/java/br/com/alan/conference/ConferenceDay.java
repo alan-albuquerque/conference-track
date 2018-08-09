@@ -38,6 +38,14 @@ public class ConferenceDay {
         return sessions;
     }
 
+    public String toDisplay() {
+        StringBuilder result = new StringBuilder();
+        for (Session session : sessions) {
+            result.append(session.toDisplay());
+        }
+        return result.toString();
+    }
+
     @Override
     public String toString() {
         return "ConferenceDay{" +

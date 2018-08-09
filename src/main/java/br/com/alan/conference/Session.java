@@ -1,6 +1,7 @@
 package br.com.alan.conference;
 
 import br.com.alan.conference.exceptions.MinutesRemainingInsufficient;
+import br.com.alan.conference.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,13 +9,17 @@ import java.util.Iterator;
 public class Session {
     private ArrayList<SessionEvent> sessionEvents;
 
+    private Integer startTime;
+    private Integer endTime;
+
     private Integer maxDuration;
     private Integer remainingMinutes;
 
-    public Session(Integer maxDuration) {
+    public Session(Integer startTime, Integer maxDuration) {
         this.sessionEvents = new ArrayList<>();
+        this.startTime = startTime;
+        this.endTime = startTime + maxDuration;
         this.maxDuration = maxDuration;
-        this.remainingMinutes = maxDuration;
     }
 
     public void setSessionEvents(ArrayList<SessionEvent> sessionEvents) {
@@ -64,6 +69,15 @@ public class Session {
                 // continue and try to add another with less time
             }
         }
+    }
+
+    public String toDisplay() {
+        StringBuilder result = new StringBuilder();
+        for (SessionEvent sessionEvent : sessionEvents) {
+            result.append(sessionEvent.toDisplay())
+                    .append(Constants.LINE_SEPARATOR);
+        }
+        return result.toString();
     }
 
     @Override
