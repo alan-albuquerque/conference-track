@@ -1,6 +1,6 @@
 package br.com.alan.conference;
 
-import br.com.alan.conference.utils.Time;
+import br.com.alan.conference.utils.TimeFormatter;
 
 public class SessionEvent {
     private int minutesDuration;
@@ -29,8 +29,7 @@ public class SessionEvent {
     }
 
     public String toDisplay() {
-        return Time.minutesToHumanReadable(scheduledTime) + ' ' + name;
-
+        return TimeFormatter.fromMinutes(scheduledTime) + ' ' + name;
     }
 
     public static SessionEvent fromTalk(Talk talk) {

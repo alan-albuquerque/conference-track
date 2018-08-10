@@ -4,7 +4,6 @@ import br.com.alan.conference.exceptions.MinutesRemainingInsufficient;
 import br.com.alan.conference.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Session {
     private ArrayList<SessionEvent> sessionEvents;
@@ -43,34 +42,7 @@ public class Session {
         currentTime += minutesDuration;
     }
 
-
-    public void organizeWithTalks(ArrayList<Talk> talks) {
-        for (Iterator<Talk> iterator = talks.iterator(); iterator.hasNext(); ) {
-            if (!hasRemainingMinutes()) {
-                // no minutes left, finish the routine
-                return;
-            }
-            Talk talk = iterator.next();
-            int nextEventDurationLimit = remainingMinutes;
-            if (networkingSessionEvent != null) {
-                nextEventDurationLimit = currentTime - Constants.NETWORKING_MINUTES;
-            }
-            if (talk.getMinutesDuration() > nextEventDurationLimit) {
-                // continue and try to add another with less time
-                continue;
-            }
-            SessionEvent sessionEvent = SessionEvent.fromTalk(talk);
-            try {
-                addSessionEvent(sessionEvent);
-                iterator.remove();
-            } catch (MinutesRemainingInsufficient e) {
-                // continue and try to add another with less time
-            }
-        }
-        placeNetworkingEventAtSessionEnd();
-    }
-
-    private void placeNetworkingEventAtSessionEnd() {
+    public void putNetworkingEventAtSessionEnd() {
         if (networkingSessionEvent == null) {
             return;
         }
@@ -81,7 +53,7 @@ public class Session {
             addSessionEvent(networkingSessionEvent);
         } catch (MinutesRemainingInsufficient e) {
             remainingMinutes += Constants.NETWORKING_MINUTES - remainingMinutes;
-            placeNetworkingEventAtSessionEnd();
+            putNetworkingEventAtSessionEnd();
         }
     }
 
@@ -94,12 +66,28 @@ public class Session {
         return result.toString();
     }
 
-    public void setNetworkingSessionEvent(SessionEvent networkingSessionEvent) {
-        this.networkingSessionEvent = networkingSessionEvent;
+    public ArrayList<SessionEvent> getSessionEvents() {
+        return sessionEvents;
     }
 
     public void setSessionEvents(ArrayList<SessionEvent> sessionEvents) {
         this.sessionEvents = sessionEvents;
+    }
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getMaxDuration() {
+        return maxDuration;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        this.maxDuration = maxDuration;
     }
 
     public int getRemainingMinutes() {
@@ -110,12 +98,20 @@ public class Session {
         this.remainingMinutes = remainingMinutes;
     }
 
-    public ArrayList<SessionEvent> getSessionEvents() {
-        return sessionEvents;
+    public int getCurrentTime() {
+        return currentTime;
     }
 
-    public int getMaxDuration() {
-        return maxDuration;
+    public void setCurrentTime(int currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public SessionEvent getNetworkingSessionEvent() {
+        return networkingSessionEvent;
+    }
+
+    public void setNetworkingSessionEvent(SessionEvent networkingSessionEvent) {
+        this.networkingSessionEvent = networkingSessionEvent;
     }
 
     @Override
