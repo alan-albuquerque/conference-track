@@ -2,11 +2,11 @@ package br.com.alan.conference.utils;
 
 public class TimeFormatter {
     public static String fromMinutes(int minutes) {
-        long hours = minutes / 60;
-        long minutesDiff = minutes % 60;
-        String minutesDiffDisplay = String.format("%02d", minutesDiff);
-        String hoursDisplay = String.format("%02d", hours);
-        String periodAbbr = getPeriodHourAbbr(hours);
+        final long hours = minutes / 60;
+        final long minutesDiff = minutes % 60;
+        final String minutesDiffDisplay = String.format("%02d", minutesDiff);
+        final String hoursDisplay = String.format("%02d", hours);
+        final String periodAbbr = getPeriodHourAbbr(hours);
         return hoursDisplay + ":" + minutesDiffDisplay + periodAbbr;
     }
 

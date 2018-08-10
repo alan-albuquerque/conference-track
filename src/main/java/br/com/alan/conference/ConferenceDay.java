@@ -19,7 +19,7 @@ public class ConferenceDay {
     }
 
     public String toDisplay() {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         for (Session session : sessions) {
             result.append(session.toDisplay());
         }

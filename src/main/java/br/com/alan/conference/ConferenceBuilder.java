@@ -35,8 +35,8 @@ public class ConferenceBuilder {
     }
 
     public static Conference build(ArrayList<Talk> talksSourceList) {
-        ArrayList<Talk> talks = new ArrayList<>(talksSourceList);
-        Conference conference = new Conference();
+        final ArrayList<Talk> talks = new ArrayList<>(talksSourceList);
+        final Conference conference = new Conference();
 
         while (!talks.isEmpty()) {
             ConferenceDay conferenceDay = ConferenceDayBuilder.build();
