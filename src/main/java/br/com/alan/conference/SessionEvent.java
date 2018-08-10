@@ -1,19 +1,22 @@
 package br.com.alan.conference;
 
-public class SessionEvent {
-    private Integer minutesDuration;
-    private String name;
+import br.com.alan.conference.utils.Time;
 
-    public SessionEvent(String name, Integer minutesDuration) {
+public class SessionEvent {
+    private int minutesDuration;
+    private String name;
+    private int scheduledTime;
+
+    public SessionEvent(String name, int minutesDuration) {
         this.name = name;
         this.minutesDuration = minutesDuration;
     }
 
-    public Integer getMinutesDuration() {
+    public int getMinutesDuration() {
         return minutesDuration;
     }
 
-    public void setMinutesDuration(Integer minutesDuration) {
+    public void setMinutesDuration(int minutesDuration) {
         this.minutesDuration = minutesDuration;
     }
 
@@ -26,7 +29,20 @@ public class SessionEvent {
     }
 
     public String toDisplay() {
-        return name;
+        return Time.minutesToHumanReadable(scheduledTime) + ' ' + name;
+
+    }
+
+    public static SessionEvent fromTalk(Talk talk) {
+        return new SessionEvent(talk.getTitle(), talk.getMinutesDuration());
+    }
+
+    public int getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(int scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 
     @Override
@@ -34,6 +50,7 @@ public class SessionEvent {
         return "SessionEvent{" +
                 "minutesDuration=" + minutesDuration +
                 ", name='" + name + '\'' +
+                ", scheduledTime=" + scheduledTime +
                 '}';
     }
 }

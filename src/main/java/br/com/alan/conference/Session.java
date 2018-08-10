@@ -9,41 +9,27 @@ import java.util.Iterator;
 public class Session {
     private ArrayList<SessionEvent> sessionEvents;
 
-    private Integer startTime;
-    private Integer endTime;
+    private int startTime;
+    private int maxDuration;
+    private int remainingMinutes;
+    private int currentTime;
+    private SessionEvent networkingSessionEvent;
 
-    private Integer maxDuration;
-    private Integer remainingMinutes;
-
-    public Session(Integer startTime, Integer maxDuration) {
+    public Session(int startTime, int maxDuration) {
         this.sessionEvents = new ArrayList<>();
         this.startTime = startTime;
-        this.endTime = startTime + maxDuration;
+        this.currentTime = startTime;
+        this.remainingMinutes = maxDuration;
         this.maxDuration = maxDuration;
     }
 
-    public void setSessionEvents(ArrayList<SessionEvent> sessionEvents) {
-        this.sessionEvents = sessionEvents;
-    }
 
-    public Integer getRemainingMinutes() {
-        return remainingMinutes;
-    }
-
-    public void setRemainingMinutes(Integer remainingMinutes) {
-        this.remainingMinutes = remainingMinutes;
-    }
-
-    public ArrayList<SessionEvent> getSessionEvents() {
-        return sessionEvents;
-    }
-
-    public Integer getMaxDuration() {
-        return maxDuration;
-    }
-
-    public Boolean hasRemainingMinutes(Integer minutes) {
+    public boolean hasRemainingMinutes(int minutes) {
         return remainingMinutes >= minutes;
+    }
+
+    public boolean hasRemainingMinutes() {
+        return remainingMinutes > 0;
     }
 
     public void addSessionEvent(SessionEvent sessionEvent) throws MinutesRemainingInsufficient {
@@ -51,23 +37,51 @@ public class Session {
             throw new MinutesRemainingInsufficient();
         }
         this.sessionEvents.add(sessionEvent);
-        remainingMinutes -= sessionEvent.getMinutesDuration();
+        sessionEvent.setScheduledTime(currentTime);
+        int minutesDuration = sessionEvent.getMinutesDuration();
+        remainingMinutes -= minutesDuration;
+        currentTime += minutesDuration;
     }
 
 
-    public void organizeTalks(ArrayList<Talk> talks) {
+    public void organizeWithTalks(ArrayList<Talk> talks) {
         for (Iterator<Talk> iterator = talks.iterator(); iterator.hasNext(); ) {
-            if (remainingMinutes == 0) {
+            if (!hasRemainingMinutes()) {
                 // no minutes left, finish the routine
                 return;
             }
             Talk talk = iterator.next();
+            int nextEventDurationLimit = remainingMinutes;
+            if (networkingSessionEvent != null) {
+                nextEventDurationLimit = currentTime - Constants.NETWORKING_MINUTES;
+            }
+            if (talk.getMinutesDuration() > nextEventDurationLimit) {
+                // continue and try to add another with less time
+                continue;
+            }
+            SessionEvent sessionEvent = SessionEvent.fromTalk(talk);
             try {
-                addSessionEvent(new SessionEvent(talk.getTitle(), talk.getMinutesDuration()));
+                addSessionEvent(sessionEvent);
                 iterator.remove();
             } catch (MinutesRemainingInsufficient e) {
                 // continue and try to add another with less time
             }
+        }
+        placeNetworkingEventAtSessionEnd();
+    }
+
+    private void placeNetworkingEventAtSessionEnd() {
+        if (networkingSessionEvent == null) {
+            return;
+        }
+        if (currentTime < Constants.NETWORKING_LIMIT_INIT_MINUTES) {
+            currentTime = Constants.NETWORKING_LIMIT_INIT_MINUTES;
+        }
+        try {
+            addSessionEvent(networkingSessionEvent);
+        } catch (MinutesRemainingInsufficient e) {
+            remainingMinutes += Constants.NETWORKING_MINUTES - remainingMinutes;
+            placeNetworkingEventAtSessionEnd();
         }
     }
 
@@ -80,6 +94,30 @@ public class Session {
         return result.toString();
     }
 
+    public void setNetworkingSessionEvent(SessionEvent networkingSessionEvent) {
+        this.networkingSessionEvent = networkingSessionEvent;
+    }
+
+    public void setSessionEvents(ArrayList<SessionEvent> sessionEvents) {
+        this.sessionEvents = sessionEvents;
+    }
+
+    public int getRemainingMinutes() {
+        return remainingMinutes;
+    }
+
+    public void setRemainingMinutes(int remainingMinutes) {
+        this.remainingMinutes = remainingMinutes;
+    }
+
+    public ArrayList<SessionEvent> getSessionEvents() {
+        return sessionEvents;
+    }
+
+    public int getMaxDuration() {
+        return maxDuration;
+    }
+
     @Override
     public String toString() {
         return "Session{" +
@@ -88,4 +126,5 @@ public class Session {
                 ", remainingMinutes=" + remainingMinutes +
                 '}';
     }
+
 }

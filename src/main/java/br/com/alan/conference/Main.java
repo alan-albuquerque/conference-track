@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Conference conference = new Conference();
-        final Integer startTime = 9 * 60; // 9h
-        final Integer endTime = 18 * 60; // 18h
         String filePath = args[0];
 
         try {
@@ -19,12 +17,12 @@ public class Main {
             ArrayList<Talk> talks = TalkFileParser.parse(filePath);
 //            System.out.println(talks.toString());
             while (!talks.isEmpty()) {
-                ConferenceDay conferenceDay = ConferenceDayBuilder.build(startTime, endTime);
+                ConferenceDay conferenceDay = ConferenceDayBuilder.build();
                 if (conferenceDay.getSessions().isEmpty()) {
                     break;
                 }
                 for (Session session : conferenceDay.getSessions()) {
-                    session.organizeTalks(talks);
+                    session.organizeWithTalks(talks);
                 }
                 conference.addDay(conferenceDay);
             }
