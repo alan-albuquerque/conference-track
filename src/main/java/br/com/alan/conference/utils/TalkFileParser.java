@@ -29,7 +29,7 @@ public class TalkFileParser {
 
     private static Talk parseLine(String line) throws InvalidTalkFileLineException, InvalidTalkFileLineTimeException {
         final Pattern pattern = Pattern.compile(Constants.TALK_LINE_PATTERN);
-        final Matcher matcher = pattern.matcher(line);
+        final Matcher matcher = pattern.matcher(Strings.removeUTF8BOM(line));
         if (!matcher.matches()) {
             throw new InvalidTalkFileLineException(line);
         }

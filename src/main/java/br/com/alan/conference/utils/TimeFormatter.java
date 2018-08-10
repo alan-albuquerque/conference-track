@@ -11,6 +11,6 @@ public class TimeFormatter {
     }
 
     public static String getPeriodHourAbbr(long hours) {
-        return hours >= 12 ? Strings.POST_MERIDIEM_LABEL : Strings.ANTE_MERIDIEM_LABEL;
+        return hours >= 12 ? Constants.POST_MERIDIEM_LABEL : Constants.ANTE_MERIDIEM_LABEL;
     }
 }

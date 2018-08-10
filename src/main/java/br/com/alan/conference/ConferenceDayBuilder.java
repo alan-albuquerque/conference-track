@@ -7,7 +7,7 @@ import br.com.alan.conference.utils.Strings;
 public class ConferenceDayBuilder {
 
     private static Session buildLunchSession() {
-        SessionEvent lunchEvent = new SessionEvent(Strings.LUNCH_EVENT_LABEL, Constants.LUNCH_MINUTES);
+        SessionEvent lunchEvent = new SessionEvent(Constants.LUNCH_EVENT_LABEL, Constants.LUNCH_MINUTES);
         Session lunchSession = new Session(Constants.LUNCH_START_TIME, Constants.LUNCH_MINUTES);
         try {
             lunchSession.addSessionEvent(lunchEvent);
@@ -24,7 +24,7 @@ public class ConferenceDayBuilder {
         Session lunchSession = buildLunchSession();
         Session afternoonSession = new Session(Constants.AFTERNOON_START_TIME, Constants.AFTERNOON_MINUTES);
 
-        SessionEvent networkingEvent = new SessionEvent(Strings.NETWORK_EVENT_LABEL, Constants.NETWORKING_MINUTES);
+        SessionEvent networkingEvent = new SessionEvent(Constants.NETWORK_EVENT_LABEL, Constants.NETWORKING_MINUTES);
         afternoonSession.setNetworkingSessionEvent(networkingEvent);
 
         conferenceDay.addSession(morningSession);

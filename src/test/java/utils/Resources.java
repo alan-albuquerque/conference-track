@@ -1,4 +1,4 @@
-package br.com.alan.conference.utils;
+package utils;
 
 import java.net.URL;
 import java.nio.file.Files;
