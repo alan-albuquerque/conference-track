@@ -22,7 +22,7 @@ public class ConferenceBuilderTest {
         Conference conference = ConferenceBuilder.build(talks);
         assertNotNull(conference);
         String[] a = conference.toDisplay().split(Constants.LINE_SEPARATOR);
-        String[] b = outputContentExpected.replaceAll("\uFEFF|\\r", "").split(Constants.LINE_SEPARATOR);
+        String[] b = outputContentExpected.replaceAll("[\uFEFF\\r]", "").split(Constants.TEST_FILES_LINE_SEPARATOR);
         assertTrue(Arrays.equals(a, b));
         assertNotNull(conference);
     }

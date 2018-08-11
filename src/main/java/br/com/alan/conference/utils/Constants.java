@@ -10,6 +10,7 @@ public class Constants {
     public static final String TALK_LINE_LIGHTNING_PATTERN = "lightning";
     public static final String TALK_LINE_PATTERN = "(.+) (" + TALK_LINE_TIME_PATTERN + "|" + TALK_LINE_LIGHTNING_PATTERN + ")";
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    public static final String TEST_FILES_LINE_SEPARATOR = "\n";
 
     public static final int MORNING_START_TIME = 540;
     public static final int LUNCH_START_TIME = MORNING_START_TIME + MORNING_MINUTES;

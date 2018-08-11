@@ -4,10 +4,8 @@ import br.com.alan.conference.Talk;
 import br.com.alan.conference.exceptions.InvalidTalkFileLineException;
 import br.com.alan.conference.exceptions.InvalidTalkFileLineTimeException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -41,7 +39,9 @@ public class TalkFileParser {
     public static ArrayList<Talk> parse(String filePath) throws IOException, InvalidTalkFileLineException, InvalidTalkFileLineTimeException {
         final ArrayList<Talk> talks = new ArrayList<>();
         final File tracksFile = new File(filePath);
-        final BufferedReader br = new BufferedReader(new FileReader(tracksFile));
+        final InputStream inputStream = new FileInputStream(tracksFile);
+        final InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        final BufferedReader br = new BufferedReader(streamReader);
         String line;
         while ((line = br.readLine()) != null) {
             Talk talk = parseLine(line);
